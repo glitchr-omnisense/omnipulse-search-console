@@ -1,6 +1,6 @@
-# omnireach/search-console
+# omnipulse/search-console
 
-Google Search Console for [omnisense/omnireach](https://github.com/glitchr-omnisense/omnireach): a
+Google Search Console for [omnisense/omnipulse](https://github.com/glitchr-omnisense/omnipulse): a
 property's search queries, pages, countries and devices with their clicks, impressions, CTR and
 average position, day by day or over a period - for a site taken over, the history of its pages
 before and after. The provider calls:
@@ -18,10 +18,10 @@ signed JWT, through the application's HTTP client.
 ## Installation
 
 ```sh
-composer require omnireach/search-console symfony/http-client
+composer require omnipulse/search-console symfony/http-client
 ```
 
-Requires PHP 8.2, `ext-openssl` (to sign the JWT), `omnisense/omnireach` (1.x) and
+Requires PHP 8.2, `ext-openssl` (to sign the JWT), `omnisense/omnipulse` (1.x) and
 `symfony/http-client-contracts` (3); any implementation of Symfony's `HttpClientInterface` does.
 
 ## Credentials
@@ -90,7 +90,7 @@ seen on a recorded client in the harness, 2026-10-26)
 alpha-3) upper-cased (`FRA`), devices lower-cased (`desktop`, `mobile`, `tablet`), queries and
 pages (full URLs) as given, dates `Y-m-d`. Clicks and impressions are integers, the CTR rounded to
 4 decimals, the position to 1; a metric not asked is left out. Rows keep Search Console's order;
-the query's filters and limit are then applied ([apply()](https://github.com/glitchr-omnisense/omnireach/blob/1.x/docs/concepts.md#filters-and-limit)):
+the query's filters and limit are then applied ([apply()](https://github.com/glitchr-omnisense/omnipulse/blob/1.x/docs/concepts.md#filters-and-limit)):
 filter `country` with the upper-case alpha-3 code, as the rows carry it.
 
 **Note.** With `data_state: all`, `Report::$note` is `The last days are provisional (dataState
@@ -107,11 +107,11 @@ queries are left out of a query breakdown, so the queries' clicks add up to less
 
 require __DIR__.'/vendor/autoload.php';
 
-use Omnireach\Model\Dimension;
-use Omnireach\Model\Metric;
-use Omnireach\Model\ReachQuery;
-use Omnireach\Registry;
-use Omnireach\SearchConsole\SearchConsoleFactory;
+use Omnipulse\Model\Dimension;
+use Omnipulse\Model\Metric;
+use Omnipulse\Model\ReachQuery;
+use Omnipulse\Registry;
+use Omnipulse\SearchConsole\SearchConsoleFactory;
 use Symfony\Component\HttpClient\HttpClient;
 
 $registry = new Registry([new SearchConsoleFactory(HttpClient::create())], [
@@ -136,15 +136,15 @@ $history = $google->searchPerformance(new ReachQuery(
 ));
 ```
 
-In Symfony (no bundle: [the core's Symfony page](https://github.com/glitchr-omnisense/omnireach/blob/1.x/docs/symfony.md)):
+In Symfony (no bundle: [the core's Symfony page](https://github.com/glitchr-omnisense/omnipulse/blob/1.x/docs/symfony.md)):
 
 ```yaml
 services:
-    Omnireach\SearchConsole\SearchConsoleFactory:
+    Omnipulse\SearchConsole\SearchConsoleFactory:
         arguments: ['@http_client']
-    Omnireach\Registry:
+    Omnipulse\Registry:
         arguments:
-            $factories: ['@Omnireach\SearchConsole\SearchConsoleFactory']
+            $factories: ['@Omnipulse\SearchConsole\SearchConsoleFactory']
             $config:
                 google:
                     factory: search-console

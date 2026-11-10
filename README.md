@@ -1,13 +1,16 @@
-# omnireach/search-console
+# omnipulse/search-console
 
-[omnisense/omnireach](https://github.com/glitchr-omnisense/omnireach)'s Google Search Console,
+Formerly `omnireach/search-console` (renamed on 2026-11-10 with its family: `Omnireach\` is now `Omnipulse\`;
+this package replaces the former name).
+
+[omnisense/omnipulse](https://github.com/glitchr-omnisense/omnipulse)'s Google Search Console,
 under any PHP host: a property's search queries, pages, countries and devices with their clicks,
 impressions, CTR and average position, day by day or over a period - for a site taken over, the
 history of its pages before and after.
 
 ```php
-use Omnireach\Registry;
-use Omnireach\SearchConsole\SearchConsoleFactory;
+use Omnipulse\Registry;
+use Omnipulse\SearchConsole\SearchConsoleFactory;
 use Symfony\Component\HttpClient\HttpClient;
 
 $registry = new Registry([new SearchConsoleFactory(HttpClient::create())], [
@@ -35,7 +38,7 @@ project - a query grouped by page or query costs more; 16 months of data; the to
 **Google credentials**: a service account's JSON key (`credentials`: the JSON or the path of
 its file) - the token is asked with a JWT signed by its key (RS256, the OAuth 2.0 JWT bearer
 grant) and kept until a minute before it expires - or an `access_token` obtained elsewhere.
-`GoogleToken` is the same class in omnireach/search-console and omnireach/ga4.
+`GoogleToken` is the same class in omnipulse/search-console and omnipulse/ga4.
 
 **Reuse**: Google's PHP libraries were set aside: `google/apiclient` with
 `google/apiclient-services` (every Google API generated, a very large package, its own Guzzle

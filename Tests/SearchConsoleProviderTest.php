@@ -1,19 +1,19 @@
 <?php
 
-namespace Omnireach\SearchConsole\Tests;
+namespace Omnipulse\SearchConsole\Tests;
 
-use Omnireach\Exception\InvalidConfigException;
-use Omnireach\Exception\InvalidKeyException;
-use Omnireach\Http\JsonApi;
-use Omnireach\Model\Dimension;
-use Omnireach\Model\Metric;
-use Omnireach\Model\ReachQuery;
-use Omnireach\Model\Row;
-use Omnireach\Registry;
-use Omnireach\SearchConsole\GoogleToken;
-use Omnireach\SearchConsole\SearchConsoleFactory;
-use Omnireach\SearchConsole\SearchConsoleProvider;
-use Omnireach\Testing\RecordedHttpClient;
+use Omnipulse\Exception\InvalidConfigException;
+use Omnipulse\Exception\InvalidKeyException;
+use Omnipulse\Http\JsonApi;
+use Omnipulse\Model\Dimension;
+use Omnipulse\Model\Metric;
+use Omnipulse\Model\ReachQuery;
+use Omnipulse\Model\Row;
+use Omnipulse\Registry;
+use Omnipulse\SearchConsole\GoogleToken;
+use Omnipulse\SearchConsole\SearchConsoleFactory;
+use Omnipulse\SearchConsole\SearchConsoleProvider;
+use Omnipulse\Testing\RecordedHttpClient;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,7 +64,7 @@ final class SearchConsoleProviderTest extends TestCase
         [$header, $claims, $signature] = explode('.', $assertion);
         $decode = static fn (string $part): string => (string) base64_decode(strtr($part, '-_', '+/'), true);
         self::assertSame(['alg' => 'RS256', 'typ' => 'JWT'], json_decode($decode($header), true));
-        self::assertSame(['iss' => 'omnireach-test@example-project.iam.gserviceaccount.com', 'scope' => 'https://www.googleapis.com/auth/webmasters.readonly', 'aud' => 'https://oauth2.googleapis.com/token', 'iat' => $now, 'exp' => $now + 3600], json_decode($decode($claims), true));
+        self::assertSame(['iss' => 'omnipulse-test@example-project.iam.gserviceaccount.com', 'scope' => 'https://www.googleapis.com/auth/webmasters.readonly', 'aud' => 'https://oauth2.googleapis.com/token', 'iat' => $now, 'exp' => $now + 3600], json_decode($decode($claims), true));
         self::assertSame(1, openssl_verify($header.'.'.$claims, $decode($signature), $public, \OPENSSL_ALGO_SHA256), 'signed with the account\'s key');
     }
 
@@ -126,6 +126,6 @@ final class SearchConsoleProviderTest extends TestCase
         $public = openssl_pkey_get_public(\is_array($details) && \is_string($details['key'] ?? null) ? $details['key'] : '');
         self::assertNotFalse($public);
 
-        return [['type' => 'service_account', 'client_email' => 'omnireach-test@example-project.iam.gserviceaccount.com', 'private_key' => \is_string($private) ? $private : '', 'token_uri' => 'https://oauth2.googleapis.com/token'], $public];
+        return [['type' => 'service_account', 'client_email' => 'omnipulse-test@example-project.iam.gserviceaccount.com', 'private_key' => \is_string($private) ? $private : '', 'token_uri' => 'https://oauth2.googleapis.com/token'], $public];
     }
 }

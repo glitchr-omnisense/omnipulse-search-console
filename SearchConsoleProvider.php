@@ -1,15 +1,15 @@
 <?php
 
-namespace Omnireach\SearchConsole;
+namespace Omnipulse\SearchConsole;
 
-use Omnireach\Capabilities;
-use Omnireach\Http\JsonApi;
-use Omnireach\Model\Dimension;
-use Omnireach\Model\Metric;
-use Omnireach\Model\ReachQuery;
-use Omnireach\Model\Report;
-use Omnireach\Model\Row;
-use Omnireach\SearchPerformanceInterface;
+use Omnipulse\Capabilities;
+use Omnipulse\Http\JsonApi;
+use Omnipulse\Model\Dimension;
+use Omnipulse\Model\Metric;
+use Omnipulse\Model\ReachQuery;
+use Omnipulse\Model\Report;
+use Omnipulse\Model\Row;
+use Omnipulse\SearchPerformanceInterface;
 
 /**
  * The Search Console API (https://developers.google.com/webmaster-tools):

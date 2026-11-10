@@ -1,12 +1,12 @@
 <?php
 
-namespace Omnireach\SearchConsole;
+namespace Omnipulse\SearchConsole;
 
-use Omnireach\Config;
-use Omnireach\Exception\InvalidConfigException;
-use Omnireach\Http\JsonApi;
-use Omnireach\ProviderFactory;
-use Omnireach\ProviderInterface;
+use Omnipulse\Config;
+use Omnipulse\Exception\InvalidConfigException;
+use Omnipulse\Http\JsonApi;
+use Omnipulse\ProviderFactory;
+use Omnipulse\ProviderInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -30,9 +30,9 @@ final class SearchConsoleFactory extends ProviderFactory
     protected function populate(Config $c): void
     {
         $c->defaults([
-            'omnireach.factory_name' => 'search-console',
-            'omnireach.factory_title' => 'Google Search Console',
-            'omnireach.required_options' => ['site'],
+            'omnipulse.factory_name' => 'search-console',
+            'omnipulse.factory_title' => 'Google Search Console',
+            'omnipulse.required_options' => ['site'],
             'credentials' => '',
             'access_token' => '',
             'data_state' => 'final',

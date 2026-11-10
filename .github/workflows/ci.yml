@@ -16,4 +16,4 @@ jobs:
   package:
     uses: glitchr-studio/ci/.github/workflows/php-package.yml@main
     with:
-      smoke-class: 'Omnireach\SearchConsole\SearchConsoleProvider'
+      smoke-class: 'Omnipulse\SearchConsole\SearchConsoleProvider'
