@@ -46,7 +46,7 @@ final class SearchConsoleFactory extends ProviderFactory
         $credentials = $c->string('credentials');
 
         return new SearchConsoleProvider(
-            new JsonApi($http, 'Search Console'),
+            new JsonApi($http, 'Search Console', $c->backoff()),
             new GoogleToken(new JsonApi($http, 'Google OAuth'), self::SCOPE, null !== $credentials ? GoogleToken::credentials($credentials) : null, $c->string('access_token')),
             (string) $c->string('site'),
             $c->string('data_state') ?? 'final',

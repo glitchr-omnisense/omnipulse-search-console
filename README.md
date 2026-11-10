@@ -46,6 +46,15 @@ stack), `google/analytics-data` (gRPC and protobuf through google/gax), `google/
 again). The family injects the application's HTTP client and needs one JSON call per report and
 one signed JWT, done here with ext-openssl.
 
+## Usage policy
+
+Search Console's usage policy is declared as data in [`policy.json`](policy.json) (omnisense/contracts'
+schema, named in `composer.json`'s `extra.omnisense.policy`), its terms read on
+2026-11-10 (https://developers.google.com/webmaster-tools/limits): Search Analytics: 1,200 queries a minute per site and per user, 40,000 a minute and 30,000,000 a day per project; rights unknown; OAuth credentials. omnipulse's registry enforces it - a call over a
+limit is never made, a 429 and its `Retry-After` hold every next call
+(`UsageLimitReachedException`) - and a site may tighten it, never loosen it
+(omnisense/omnipulse's docs/policies.md).
+
 ## Verified, and not
 
 - Verified (the core's harness, PHP 8.4): a query by query and country with two filters, the

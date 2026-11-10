@@ -10,14 +10,21 @@ use Omnipulse\Model\ReachQuery;
 use Omnipulse\Model\Report;
 use Omnipulse\Model\Row;
 use Omnipulse\SearchPerformanceInterface;
+use Omnisense\Contracts\Policy\DeclaresUsagePolicyInterface;
+use Omnisense\Contracts\Policy\UsagePolicy;
 
 /**
  * The Search Console API (https://developers.google.com/webmaster-tools):
  * POST sites/{site}/searchAnalytics/query - dimensions, "equals" filters,
  * pages of rows (startRow, rowLimit up to 25,000) - with a bearer token.
  */
-final class SearchConsoleProvider implements SearchPerformanceInterface
+final class SearchConsoleProvider implements SearchPerformanceInterface, DeclaresUsagePolicyInterface
 {
+    /** Search Console's usage policy, as its terms read on the day it says (provenance.verifiedAt). */
+    public const POLICY = __DIR__.'/policy.json';
+
+    private static ?UsagePolicy $policy = null;
+
     private const DIMENSIONS = ['query' => 'query', 'page' => 'page', 'country' => 'country', 'device' => 'device', 'date' => 'date'];
 
     /** The most rows Search Console returns in one call. */
@@ -42,6 +49,11 @@ final class SearchConsoleProvider implements SearchPerformanceInterface
         return 'Google Search Console';
     }
 
+    public function usagePolicy(): UsagePolicy
+    {
+        return self::$policy ??= UsagePolicy::fromFile(self::POLICY);
+    }
+
     public function capabilities(): Capabilities
     {
         return new Capabilities(
@@ -50,6 +62,7 @@ final class SearchConsoleProvider implements SearchPerformanceInterface
             metrics: [Metric::Clicks, Metric::Impressions, Metric::Ctr, Metric::Position],
             terms: ['https://developers.google.com/webmaster-tools/terms', 'https://developers.google.com/webmaster-tools/limits'],
             limits: ['Search Analytics load quotas per site, per user and per project (see the limits page); a query grouped by page or query costs more', '16 months of data; the last two or three days provisional (data_state "all")', 'the rows are the top ones: anonymized queries are left out of a query breakdown'],
+            policy: $this->usagePolicy(),
         );
     }
 

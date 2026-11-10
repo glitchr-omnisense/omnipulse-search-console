@@ -1,0 +1,74 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "search-console",
+    "rateLimits": [
+        {
+            "max": 1200,
+            "window": "minute",
+            "scope": "key",
+            "operations": [
+                "searchPerformance"
+            ],
+            "note": "Search Analytics per site: 1,200 queries a minute (scope key stands for the site)."
+        },
+        {
+            "max": 1200,
+            "window": "minute",
+            "scope": "user",
+            "operations": [
+                "searchPerformance"
+            ],
+            "note": "Search Analytics per user: 1,200 queries a minute."
+        },
+        {
+            "max": 40000,
+            "window": "minute",
+            "scope": "application",
+            "operations": [
+                "searchPerformance"
+            ],
+            "note": "Search Analytics per project: 40,000 queries a minute."
+        },
+        {
+            "max": 30000000,
+            "window": "day",
+            "scope": "application",
+            "operations": [
+                "searchPerformance"
+            ],
+            "note": "Search Analytics per project: 30,000,000 queries a day."
+        }
+    ],
+    "rights": {
+        "commercial": "unknown",
+        "openSourceRequired": null,
+        "caching": {
+            "permission": "unknown",
+            "maxTtl": null
+        },
+        "storage": "unknown",
+        "redistribution": "unknown",
+        "attribution": {
+            "required": false,
+            "text": null,
+            "url": null,
+            "where": []
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": "https://developers.google.com/webmaster-tools/terms",
+        "policy": "https://developers.google.com/webmaster-tools/limits",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer",
+        "contact": null,
+        "notes": "Usage limits read on 2026-11-10: Search Analytics 1,200 QPM per site, 1,200 QPM per user, 40,000 QPM and 30,000,000 QPD per project; Google adds short-term load quotas (a query grouped by page or by query, over a long range, costs more) that it does not put in figures. A call of searchPerformance is one Search Analytics query (a breakdown by date is the same query). The OAuth token call is not counted. The terms set no figure on caching or storage of the reports, which are the site owner's own data: unknown."
+    }
+}
