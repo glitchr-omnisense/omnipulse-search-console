@@ -14,6 +14,7 @@ use Omnipulse\SearchConsole\GoogleToken;
 use Omnipulse\SearchConsole\SearchConsoleFactory;
 use Omnipulse\SearchConsole\SearchConsoleProvider;
 use Omnipulse\Testing\RecordedHttpClient;
+use Omnipulse\Exception\UsageLimitReachedException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -128,4 +129,20 @@ final class SearchConsoleProviderTest extends TestCase
 
         return [['type' => 'service_account', 'client_email' => 'omnipulse-test@example-project.iam.gserviceaccount.com', 'private_key' => \is_string($private) ? $private : '', 'token_uri' => 'https://oauth2.googleapis.com/token'], $public];
     }
+
+    public function testTheTokenRequestIsCountedUnderTokenAndNeverSentOverASitesLimit(): void
+    {
+        [$key] = self::serviceAccount();
+        $http = self::http();
+        $registry = new Registry([new SearchConsoleFactory($http)], ['google' => ['factory' => 'search-console', 'options' => ['site' => 'sc-domain:atelier.example.org', 'credentials' => (string) json_encode($key)], 'policy' => ['rateLimits' => [['max' => 0, 'window' => 'day', 'operations' => ['token']]]]]]);
+
+        try {
+            $registry->search('google')->searchPerformance(ReachQuery::lastDays(28, [Dimension::Query]));
+            self::fail('The token request went out over the site\'s limit.');
+        } catch (UsageLimitReachedException $e) {
+            self::assertSame('0/day/application/token', $e->limit?->id());
+        }
+        self::assertSame([], $http->requests, 'nothing was sent');
+    }
+
 }

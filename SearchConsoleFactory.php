@@ -7,6 +7,7 @@ use Omnipulse\Exception\InvalidConfigException;
 use Omnipulse\Http\JsonApi;
 use Omnipulse\ProviderFactory;
 use Omnipulse\ProviderInterface;
+use Omnisense\Contracts\Policy\UsagePolicy;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -47,7 +48,7 @@ final class SearchConsoleFactory extends ProviderFactory
 
         return new SearchConsoleProvider(
             new JsonApi($http, 'Search Console', $c->backoff()),
-            new GoogleToken(new JsonApi($http, 'Google OAuth'), self::SCOPE, null !== $credentials ? GoogleToken::credentials($credentials) : null, $c->string('access_token')),
+            new GoogleToken(new JsonApi($http, 'Google OAuth'), self::SCOPE, null !== $credentials ? GoogleToken::credentials($credentials) : null, $c->string('access_token'), guard: $c->guard(UsagePolicy::fromFile(SearchConsoleProvider::POLICY))),
             (string) $c->string('site'),
             $c->string('data_state') ?? 'final',
             rtrim($c->string('url') ?? 'https://searchconsole.googleapis.com/webmasters/v3', '/'),
