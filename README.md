@@ -8,6 +8,38 @@ under any PHP host: a property's search queries, pages, countries and devices wi
 impressions, CTR and average position, day by day or over a period - for a site taken over, the
 history of its pages before and after.
 
+## Install and a first call
+
+```sh
+composer require omnipulse/search-console
+```
+
+No account for this first call: Search Console's answer is recorded
+(`Omnipulse\Testing\RecordedHttpClient` answers in place of the API), so nothing leaves the process.
+A real call needs a Google Cloud service account added as a user of the Search Console property (its
+JSON key as `credentials`), or an access token obtained elsewhere.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnipulse\Model\{Dimension, ReachQuery};
+use Omnipulse\SearchConsole\SearchConsoleFactory;
+use Omnipulse\Testing\RecordedHttpClient;
+
+// Search Console's answer, recorded: nothing sent. HttpClient::create() (symfony/http-client) for a real call.
+$http = RecordedHttpClient::routes([
+    'POST /searchAnalytics/query' => '{"rows": [{"keys": ["atelier poterie strasbourg"], "clicks": 42, "impressions": 980, "ctr": 0.0429, "position": 3.62}]}',
+]);
+$console = (new SearchConsoleFactory($http))->create(['site' => 'sc-domain:atelier.example.org', 'access_token' => 'recorded']);
+
+$report = $console->searchPerformance(new ReachQuery(new DateTimeImmutable('2026-09-24'), new DateTimeImmutable('2026-10-21'), [Dimension::Query]));
+echo json_encode($report->rows[0]->dimensions + $report->rows[0]->metrics, JSON_UNESCAPED_SLASHES), "\n";   // {"query":"atelier poterie strasbourg","clicks":42,"impressions":980,"ctr":0.0429,"position":3.6}
+```
+
+With your credentials, through the family's registry:
+
 ```php
 use Omnipulse\Registry;
 use Omnipulse\SearchConsole\SearchConsoleFactory;
